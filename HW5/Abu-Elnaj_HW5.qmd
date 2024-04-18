@@ -1,0 +1,134 @@
+---
+title: "HW5"
+author: "Carma Abu-Elnaj"
+format:
+  html: 
+    embed-resources: true
+editor: visual
+---
+
+## Homework 5
+
+1\) Describe what the study is about - the hypothesis, predictions, etc.. Include some example sentences from the stimuli. This should all be done in markdown text - not in code comments.
+
+Here are some predictions and examples based on the experiment's design:
+
+**Hypothesis**: If comprehenders effectively predict upcoming words, then sentences with expected continuations (those that fit the prediction) should be processed faster than sentences with unexpected continuations.\
+
+**Predictions**: It is anticipated that response times for articles and nouns that are expected (high cloze probability) will be faster compared to those that are unexpected.Unexpected words (both articles and nouns) will elicit slower response times, indicating a disruption in the predictive process.\
+
+**Example Sentences from Stimuli**: Expected Continuation: "The day was breezy so the boy went outside to fly a kite." Here, "a kite" is the expected noun following the article "a", which fits the phonotactic constraint of the sentence. Unexpected Continuation: "The day was breezy so the boy went outside to fly an airplane." Here, "an airplane" is unexpected as "an" does not typically precede "airplane" in predictable contexts, causing a slower response due to the lower cloze probability. 
+
+2\) Include a codebook/data dictionary that explains all of the original variables in the imported data. \
+Below is the data dictionary for the dataset used:
+
+-   Result Index: the index of the results
+
+-   Time: the time
+
+-   Counter: unsure, the author doesn't seem to use it
+
+-   Hash: the hash of the user/ user identifier
+
+-   Logged in as experiment owner? (if known): Whether or not the user logged in as the experiment owner
+
+-   Controller name: the name of the controller
+
+-   Item number: the number of the item
+
+-   Element number: the number of the element
+
+-   Type: what is the type of the question
+
+-   Group: the group number
+
+-   Field name: the name of the field
+
+-   Field value: the value of the field
+
+-   Word number: refers to the words place in the sentence
+
+-   Word: the word in question
+
+-   Alternative: an alternative word choice
+
+-   Word on (0=left, 1=right): word location in word set
+
+-   Correct: is the word correct or not
+
+-   Reading time to first answer: the time it takes to get to the first answer
+
+-   Sentence: the sentence we are looking at
+
+-   Total time to correct answer: the total amount of time it takes to get to the correct answer
+
+-   Question (NULL if none): any questions if applicable
+
+-   Answer: the answer to the questions if applicable
+
+-   Whether or not answer was correct (NULL if N/A): if the answer was correct of not
+
+-   Time taken to answer: the amount of time it took to answer
+
+3\) How many participants do you have data for total? Use inline R-code to "print" this number in the markdown text.
+
+If you run the code chunk bellow you get the number of participants as being 39.
+
+```{r}
+
+data <- read.csv("delong maze 40Ss.csv")
+
+library(dplyr)
+
+#count the number of unique participant IDs
+num_participants <- data %>%
+  summarise(total_participants = n_distinct(Hash))
+
+#print the number of participants
+print(num_participants)
+```
+
+4\) How many rows of data remained after removing the trials as described in the "data analysis" section? (inline code in text - discuss what kind of data you excluded!)
+
+If you run the code chunk bellow you see that 4116 rows of data remain
+
+```{r}
+#filterthe data
+filtered_data <- data %>%
+  filter(`Item.number` != 29, #item 29
+         Correct != "no") #no
+
+print(nrow(filtered_data))
+print(73632-69516) #get difference
+```
+
+5\) Print a table showing the mean, min, max, and standard deviation of participant ages. (as a table in the markdown, not as R output)
+
+```{r}
+#calc summary statistics for age
+age_stats <- data %>%
+  filter(`Field.name` == "age") |>
+  summarise(
+    mean_age = mean(as.numeric(`Field.value`), na.rm = TRUE),
+    min_age = min(as.numeric(`Field.value`), na.rm = TRUE),
+    max_age = max(as.numeric(`Field.value`), na.rm = TRUE),
+    sd_age = sd(as.numeric(`Field.value`), na.rm = TRUE)
+  )
+library(knitr)
+
+#print the table in markdown format
+knitr::kable(age_stats, caption = "Summary Statistics of Participant Ages", align = 'c')
+
+```
+
+6\) Reproduce the figure in Figure 1.
+
+```{r}
+
+```
+
+7\) Include a table showing the same results as in Figure 1 - you can skip the standard error numbers if that is too challenging. 
+
+```{r}
+
+```
